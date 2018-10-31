@@ -1,0 +1,70 @@
+<template>
+  <div>
+    <van-nav-bar
+        title="填写爱车信息"
+        left-text=""
+        right-text=""
+        left-arrow
+        :fixed="true"
+        @click-left="onClickLeft"
+    />
+    <div class="mTop" >
+      <van-cell-group>
+        <van-cell >
+          <van-row>
+            <van-col span="12" style="text-align:center;"><van-icon name="exchange"  style="margin-top:5px;"/>&nbsp;积分&nbsp;<span style="color:red;">15</span> </van-col>
+            <van-col span="12" style="text-align:center;border-left:1px solid #e5e5e5;"><van-icon name="records"  style="margin-top:5px;"/>>&nbsp;兑换记录</van-col>
+          </van-row>
+        </van-cell>
+      </van-cell-group>
+      <van-cell-group class="topGroup">
+        <van-cell title="精选推荐"  icon="wap-nav"  >
+        </van-cell>
+      </van-cell-group>
+    </div>
+  </div>
+</template>
+<script>
+import { Row, Col } from 'vant'
+import { getIntegralList } from '@/api/integral'
+export default {
+  data() {
+    return {
+      list: {}
+    }
+  },
+  mounted() {
+    this.resetInit()
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    async initData() {
+      const total = await getIntegralList({ pageNo: this.pages.currPage, pageSize: this.pages.perPage, isShow: 1, type: 1 }, true).then((ret) => {
+        if (ret.page.records) {
+          if (this.pages.currPage === 1) {
+            this.list = ret.page.records
+          } else {
+            this.list.push(...ret.page.records)
+          }
+        }
+        return ret.page.total
+      })
+      return total
+    },
+    changeType(item) {
+      this.selectTypeValue = item.value
+      this.resetInit()// 更新页数
+    }
+  },
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col
+  }
+}
+</script>
+<style scoped>
+
+</style>
+

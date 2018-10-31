@@ -1,0 +1,215 @@
+<template class="main">
+  <div>
+    <van-nav-bar
+      title="新闻详情"
+      left-text="返回"
+      right-text=""
+      left-arrow
+      :fixed="true"
+      @click-left="onClickLeft"
+    />
+    <div class="news-detail mTop">
+      <div class="news-title"> {{newsOne.title}} </div>
+      <div class="news-bottom">
+        <span class="news-author">{{newsOne.author}}</span>
+        <span class="news-time">{{newsOne.createDate}}</span>
+        <div class="news-visited">
+            <van-icon name="password-view"/>
+            <span>{{newsOne.hits}}</span>
+        </div>
+      </div>
+      <div>
+        <div v-html="newsOne.detail" class="new-div"></div>
+        <p class="source">本文来源于{{newsOne.source}}</p>
+        <button class="like">
+          <van-icon name="like" @click="newLike"/>
+          {{newsOne.like}}
+        </button>
+      </div>
+      <div class="topGroup" v-if="commentList.length>0" >
+        <van-cell title="全部评论"  icon="wap-nav" />
+        <van-cell v-for="(item,index) in commentList" :key="index">
+          <div class="content">
+            <div class="bg-cut">
+              <img src="../../assets/logo.png"/>
+            </div>
+            <div class="comment-views">
+              <van-icon name="like"/>
+              <span>{{item.like}}</span>
+            </div>
+            <div class="content-name">用户名</div>
+            <div class="content-time">{{item.createDate}}</div>
+            <div class="content-content">{{item.comment}}</div>
+          </div>
+        </van-cell>
+      </div>
+      <div class="footer">
+        <input type="text"/>
+        <van-icon name="chat" class="icon"/>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { newsOne, newsCommentList } from '@/api/news'
+import { List, PullRefresh } from 'vant'
+import IsEmpty from '@/components/is-empty/'
+import loadMore from '@/mixins/load-more'
+export default {
+  mixins: [loadMore],
+  data() {
+    return {
+      commentList: [],
+      newsOne: {},
+      newsComment: {},
+      loading: false,
+      finished: false
+    }
+  },
+  mounted() {
+  },
+  created() {
+    newsOne({ id: this.$route.params.id }).then((data) => {
+      this.newsOne = data.new// 赋值数据
+    })
+    newsCommentList({ id: this.$route.params.id }).then((data) => {
+      this.commentList = data.commentList// 赋值数据
+    })
+  //  newLike({ id: this.$route.params.id }).then((data) => {  })
+  //  newsComment({ id: this.$route.params.id }).then((data) => { }),
+  },
+  methods: {
+    onLoad() {
+      // setTimeout(() => {
+      //   for (let i = 0; i < 10; i++) {
+      //     this.commentList.push(this.commentList.length + 1)
+      //   }
+      //   this.loading = false
+
+      //   if (this.commentList.length >= 50) {
+      //     this.finished = true
+      //   }
+      // }, 1000)
+    },
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    newLike() {}
+  },
+  components: {
+    [List.name]: List,
+    [PullRefresh.name]: PullRefresh,
+    IsEmpty
+  }
+}
+</script>
+<style scoped>
+.main{
+  height:100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.news-detail{
+  background: #fff;
+  word-break: break-all;
+  -webkit-text-align:justify;
+  text-align: justify;
+  padding: 1.89rem 1.18rem 1.18rem;
+}
+.news-detail p{
+  word-break: break-all;
+  padding:0.55rem 0;
+  line-height:2rem;
+}
+.news-title{
+  color:#333;
+  font-size: 1.73rem;
+  line-height: 1.97rem;
+  font-weight: 700;
+}
+.news-bottom{
+    font-size: 1rem;
+    padding:1.18rem 0;
+  }
+  .news-author{
+    color: #666;
+  }
+  .news-visited{
+    float: right;
+
+  }
+.news-time{
+  color: #999;
+  margin-left:0.39rem;
+}
+.source{
+  font-size: 1rem;
+  color: rgb(191,191,191)
+}
+.topGroup{
+    margin-top: 0.7rem;
+  }
+.like{
+  margin: 0.4rem auto 0;
+  padding: 0.35rem 0.75rem 0.4rem;
+  border-radius: 1.73rem;
+  border: 1px solid #e5e4e4;
+  background: #fff;
+  min-width: 6.5rem;
+  font-size: 1.25rem;
+  display: block;
+}
+.content{
+  margin-bottom: 0.7rem;
+  padding: 0.8rem 1.18rem 0.8rem 3.75rem;
+  position: relative;
+  /*box-shadow: 1.18rem 1px 0 rgba(0,0,0,0.04)*/
+}
+.bg-cut{
+  width: 2.76rem;
+  height: 2.76rem;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+}
+.bg-cut img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.comment-views{
+  color:#999;
+  float:right
+}
+.content-name{
+  display: inline-block;
+  color: #666;
+}
+.content-time{
+  color: #999;
+  font-size: 0.9rem;
+}
+.content-content{
+  word-break: break-all;
+  font-size: 1.18rem;
+}
+.footer{
+  position: absolute;
+  height: 50px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background: #e7e7e7;
+}
+.footer input{
+  height: 30px;
+  margin-top: 9px;
+  border: 1px solid #ccc;
+}
+.new-div img{
+  max-width:100%;
+}
+</style>
+

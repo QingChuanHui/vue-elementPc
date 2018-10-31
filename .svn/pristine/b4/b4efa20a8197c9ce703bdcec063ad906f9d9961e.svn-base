@@ -1,0 +1,27 @@
+<template>
+  <van-cell-group>
+     <van-cell title="用户" value="个人设置"  :to="{path:'/user/userSetting'}" />
+     <van-cell title="单元格" value="首页" />
+     <van-cell title="单元格" value="首页" />
+      <!-- <p class="divider"  >
+        我是有底线的
+      </p> -->
+  </van-cell-group>
+</template>
+<script>
+import { CellGroup, Cell } from 'vant'
+export default {
+  data() {
+    return {
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell
+  }
+}
+</script>

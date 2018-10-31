@@ -1,0 +1,87 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="洗车买单"
+      left-text=""
+      right-text=""
+      :left-arrow="false"
+      :fixed="true"
+      style="z-index:10;"
+    />
+    <div></div>
+    <div class="page-bottom">
+        <div class="xi-pay">
+          ￥<span class="xi-pay-money">24</span>起
+        </div>
+        <div class="xi-count">全城248家商户通用 </div>
+        <button class="xi-button">去买单</button>
+    </div>
+  </div>
+</template>
+<script>
+// import { shopList } from '@/api/shop'
+import { List } from 'vant'
+export default {
+  data() {
+    return {
+      list: [],
+      kindList: [],
+      picIp: process.env.BASE_API,
+      refLoading: false, // 下拉刷新
+      cssH: {
+        'min-height': (window.innerHeight - 140) + 'px'
+      }
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  },
+  components: {
+    [List.name]: List
+  }
+}
+</script>
+<style scoped>
+  .page-bottom{
+    position: fixed;
+    left: 0;
+    right:0;
+    bottom:0;
+    z-index: 5;
+    height: 50px;
+    background: #2d3c4b;
+  }
+  .xi-pay{
+    padding: 0 0.8rem 0 1.18rem;
+    font-size: 1.18rem;
+    color: #fa5a4b;
+    min-width: 23rem;
+    height: 50px;
+    line-height: 50px;
+    float: left;
+  }
+  .xi-pay-money{
+    font-size: 2.3rem;
+  }
+  .xi-count{
+    color: #fff;
+    position: absolute;
+    right: 11.45rem;
+    bottom: 0.63rem;
+    font-size: 1rem;
+  }
+  .xi-button{
+    width: 10rem;
+    height: 50px;
+    line-height: 50px;
+    font-weight: 600;
+    background: #fa5a4b;
+    color: #fff;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    font-size: 1.5rem;
+  }
+</style>

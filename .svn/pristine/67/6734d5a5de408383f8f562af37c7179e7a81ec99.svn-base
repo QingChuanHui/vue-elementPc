@@ -1,0 +1,44 @@
+import request from '@/utils/axios'
+
+/**
+ * 获取车辆列表
+ * @param {*参数} param
+ */
+export function carList(param, closeLoading) {
+  return request.fetchPost('/v1/app/car/selectList', param, closeLoading)
+}
+/**
+ * 设置默认车辆
+ * @param {*参数} param
+ */
+export function carDefault(param, closeLoading) {
+  return request.fetchPost('/v1/app/car/setdefault', param, closeLoading)
+}
+/**
+ * 删除车辆
+ * @param {*参数} param
+ */
+export function carDelete(param, closeLoading) {
+  return request.fetchPost('/v1/app/car/delete', param, closeLoading)
+}
+/**
+ * 编辑车辆
+ * @param {*参数} param
+ */
+export function carUpdate(param, closeLoading) {
+  return request.fetchPost('/v1/app/car/update', param, closeLoading)
+}
+/**
+ * 新增车辆
+ * @param {*参数} param
+ */
+export function carAdd(param, closeLoading) {
+  return request.fetchPost('/v1/app/car/insert', param, closeLoading)
+}
+/**
+ * 生成订单
+ * @param {*参数} param
+ */
+export function createBill(param, closeLoading) {
+  return request.fetchPost('/v1/app/bill/createBill', param, closeLoading)
+}

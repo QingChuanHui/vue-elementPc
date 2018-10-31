@@ -1,0 +1,29 @@
+export default [
+  {
+    path: '/shop/detail',
+    name: '门店详情',
+    component: resolve => require(['@/views/shop/shopDetail'], resolve)
+  },
+  {
+    path: '/xiche',
+    name: '洗车',
+    meta: { keepAlive: true },
+    component: resolve => require(['@/views/shop/xiche/xiche'], resolve)
+  },
+  {
+    path: '/xiche/detail',
+    name: '店铺详情',
+    component: resolve => require(['@/views/shop/xiche/xicheDetail'], resolve)
+  },
+  {
+    path: '/xiche/charge',
+    name: '洗车支付',
+    meta: { keepAlive: true },
+    component: resolve => require(['@/views/shop/xiche/xicheCharge'], resolve)
+  },
+  {
+    path: '/xiche/charge/coupon',
+    name: '我的优惠券',
+    component: resolve => require(['@/views/shop/xiche/xicheCoupon'], resolve)
+  }
+]

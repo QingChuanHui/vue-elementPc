@@ -1,0 +1,54 @@
+<template>
+  <div class="handbook" >
+    <van-nav-bar title="保养手册" left-text="" right-text="" :left-arrow="true"  @click-left="onClickLeft" :fixed="true" style="z-index:10;"/>
+    <van-cell-group class="mTop">
+      <van-cell :title="car.carType" style="line-height:40px;overflow:hidden" >
+        <img  v-lazy="car.img"  width="40" height="40" slot="icon" />
+      </van-cell>
+    </van-cell-group>
+    <div style="clear:both;margin-top:0.7rem;background-color:#fff;">
+      <div class="handbookLeft">
+        <div class="bookLeftRow">保养项目</div>
+      </div>
+      <div class="handbookRight"></div>
+    </div>
+  </div>
+</template>
+<script>
+import {} from 'vant'
+export default {
+  data() {
+    return {
+      picUrl: process.env.BASE_API,
+      car: [] // 车辆
+    }
+  },
+  mounted() {
+    if (this.$store.getters.myDefaultCar.carType !== undefined && this.$store.getters.myDefaultCar.carType !== '') {
+      this.car = this.$store.getters.myDefaultCar
+    }
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    }
+  },
+  components: {
+  }
+}
+</script>
+<style  lang="scss" scoped>
+.handbook{
+  .handbookLeft{
+    float: left;
+    width:111rem;
+  }
+  .bookLeftRow{
+    height: 2rem;
+    line-height: 2rem;
+    overflow: hidden;
+    border-bottom: 1px solid #f8f8f8;
+  }
+}
+</style>
+

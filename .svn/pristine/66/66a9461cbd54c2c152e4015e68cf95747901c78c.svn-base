@@ -1,0 +1,52 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="个人设置"
+      left-text="返回"
+      right-text=""
+      left-arrow
+      :fixed="true"
+      @click-left="onClickLeft"
+    />
+    <van-cell-group  class="mTop" >
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+      <van-cell title="我的" value="个人设置" ></van-cell>
+    </van-cell-group>
+  </div>
+</template>
+<script>
+import { CellGroup, Cell } from 'vant'
+export default {
+  data() {
+    return {
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    }
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell
+  }
+}
+</script>

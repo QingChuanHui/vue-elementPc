@@ -1,0 +1,66 @@
+<template>
+  <div>
+    <van-nav-bar
+        title="填写爱车信息"
+        left-text=""
+        right-text=""
+        left-arrow
+        :fixed="true"
+        @click-left="onClickLeft"
+    />
+    <div class="mTop" >
+      <van-row>
+        <van-col span="12">积分</van-col>
+        <van-col span="12">兑换记录</van-col>
+      </van-row>
+      <van-cell-group>
+        <van-field
+          type="text"
+          placeholder="请选择车辆"
+          v-model="carTypeName"
+          disabled
+          label="车辆"
+        />
+        <van-field
+          type="number"
+          placeholder="请输入公里数"
+          v-model="carMile"
+          label="行驶里程"
+        >
+          <van-button slot="button" size="small" type="default">公里</van-button>
+        </van-field>
+      </van-cell-group>
+    </div>
+    <!-- <div class="page-bottom">
+      <van-button type="primary" bottom-action @click="addCar()">保存</van-button>
+    </div> -->
+  </div>
+</template>
+<script>
+import { Row, Col } from 'vant'
+export default {
+  data() {
+    return {
+      user: {}
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    urlArea() {
+      this.$router.push({ path: '/home/area' })
+    }
+  },
+  components: {
+    [Row.name]: Row,
+    [Col.name]: Col
+  }
+}
+</script>
+<style scoped>
+
+</style>
+

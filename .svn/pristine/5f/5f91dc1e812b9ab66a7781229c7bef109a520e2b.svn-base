@@ -1,0 +1,12 @@
+export default [
+  {
+    path: '/shop/detail',
+    name: '门店详情',
+    component: resolve => require(['@/views/shop/shopDetail'], resolve)
+  },
+  {
+    path: '/xiche',
+    name: '洗车',
+    component: resolve => require(['@/views/shop/xiche/xiche'], resolve)
+  }
+]

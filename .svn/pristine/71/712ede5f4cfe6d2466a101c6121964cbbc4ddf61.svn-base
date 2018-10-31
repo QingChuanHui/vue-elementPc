@@ -1,0 +1,4 @@
+const getters = {
+  currentCity: state => state.cheFuData.currentCity
+}
+export default getters

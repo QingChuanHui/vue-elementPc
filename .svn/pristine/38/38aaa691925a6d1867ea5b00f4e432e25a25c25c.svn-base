@@ -1,0 +1,38 @@
+import request from '@/utils/axios'
+
+/**
+ * 获取积分商品和优惠券
+ * @param {*参数} param
+ */
+export function getIntegralList(param) {
+  return request.fetchPost('/v1/app/integralGoods/selectList', param)// /v1/integralGoods/selectList
+}
+/**
+ * 获取积分详细
+ * @param {*参数} param
+ */
+export function getIntegralDetail(param) {
+  return request.fetchPost('/v1/app/integralGoods/select', param)
+}
+/**
+ * 兑换积分
+ * @param {*参数} param
+ */
+export function createIntegralBill(param) {
+  return request.fetchPost('/v1/app/integralGoodsBill/insert', param)
+}
+/**
+ * 兑换记录
+ * @param {*参数} param
+ */
+export function exchangeIntegralLog(param) {
+  return request.fetchPost('/v1/app/integralGoodsBill/selectList', param)
+}
+/**
+ * 单条兑换记录
+ * @param {*参数} param
+ */
+export function exchangeIntegralByID(param) {
+  return request.fetchPost('/v1/app/integralGoodsBill/select', param)
+}
+

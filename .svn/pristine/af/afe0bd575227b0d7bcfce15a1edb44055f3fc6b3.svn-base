@@ -1,0 +1,111 @@
+<template>
+  <van-list v-model="loading" :finished="finished"  class="backColor"  >
+    <van-cell v-for="(item,index) in billList" :key="index" style="margin-bottom:0.7rem;" :to="{path:'/user/myOrder/reviewDetail', query: { id: item.id }}" >
+      <div class="show-top">
+        <div class="show-user-photo"   v-lazy:background-image="picIp+item.ownerHeadPic" ></div>
+        <div class="show-name-date">
+          <div>{{item.ownerName}}</div>
+          <div style="color:rgb(177, 173, 173)">{{item.evaluateDate}}</div>
+        </div>
+      </div>
+      <van-row  class="showCarType">
+        <van-col span="10">
+          车型：{{item.carType}}
+        </van-col>
+        <van-col span="14">
+          花费：￥{{item.payMoney}}<span style="color:red;" >（省￥{{item.discountMoney}}）</span>
+        </van-col>
+      </van-row>
+      <div class="show-cont" v-html="item.evaluateContent"><span style="color:#64739c">更多</span> </div>
+      <div class="flexbox" v-show ="item.mgrBillEvaluatePicList.length" >
+        <div class="flexTop1" v-for="(item1,index) in item.mgrBillEvaluatePicList" :key="index">
+          <div class="flex-img" v-lazy:background-image="picIp+item1.path"></div>
+        </div>
+      </div>
+      <div style="color:#64739c">
+        <van-icon name="shop" /> {{item.companyName}}
+      </div>
+    </van-cell>
+  </van-list>
+</template>
+<script>
+import { Cell, List, Row, Col } from 'vant'
+import { billList } from '@/api/user'
+export default {
+  name: 'comment',
+  data() {
+    return {
+      billList: [], // 数据列表
+      picIp: process.env.BASE_API,
+      finished: false, // 是否没有数据
+      loading: false
+      // assessList: [{ title: '撒开了的即可垃圾的时刻拉家带口垃圾毒素快乐圣诞节快来看' }], // 数据列表
+      // topImg: 'https://ocpvd2g2n.qnssl.com/userInfo/pro_OVuW7P011BIpTjsdIMdy.jpg',
+      // adImg: 'https://ocpvh3dgz.qnssl.com/public/2018/5/22/9147777f31e1e33cfd40da784041b01c.jpg-thumbnail'
+    }
+  },
+  mounted() {
+    billList({ pageNo: 1, pageSize: 9999, state: 3 }).then((data) => {
+      this.billList = data.page.records// 赋值数据
+    })
+  },
+  methods: {
+  //  onLoad() {
+  //    setTimeout(() => {
+  //      for (let i = 0; i < 5; i++) {
+  //        this.assessList.push(this.assessList.length + 1)
+  //      }
+  //      this.loading = false
+
+  //      if (this.assessList.length >= 5) {
+  //        this.finished = true
+  //      }
+  //    }, 1000)
+  //  }
+  },
+  components: {
+    [Cell.name]: Cell,
+    [List.name]: List,
+    [Row.name]: Row,
+    [Col.name]: Col
+  }
+}
+</script>
+<style scoped>
+.show-top{
+   height: 3.5rem;
+}
+.show-user-photo{
+  float:left;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-size: 100% 100%;
+  margin-right: 1rem;
+}
+.show-name-date{
+  float: left;
+}
+.showCarType{
+  clear:both;margin-top:0.8rem;
+  color:rgb(177, 173, 173);
+}
+.show-cont{
+  margin-top: 0.8rem;
+}
+.flexbox {
+  background-color: #fff;
+  display:-webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+}
+.flexTop1{
+  /*-webkit-box-flex: 1;
+  -webkit-flex:1;
+  flex:1;*/
+  width:33.3%
+}
+.flex-img{margin: 5px;padding: 0 10px; background: no-repeat center;height: 9rem; background-size: cover;}
+</style>
+

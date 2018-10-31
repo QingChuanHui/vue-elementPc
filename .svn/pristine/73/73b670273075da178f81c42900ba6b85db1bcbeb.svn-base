@@ -1,0 +1,199 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="洗车买单"
+      left-text=""
+      right-text=""
+      :left-arrow="false"
+      :fixed="true"
+      style="z-index:10;"
+    />
+    <div class="show-price mTop">
+      <div class="price-detail">
+        ￥<span>{{this.thisPrice}}</span>
+      </div>
+      <div class="font-s">标准洗车1次</div>
+      <div class="s-line"></div>
+    </div>
+    <div>
+      <ul class="price-item">
+        <li v-for="(item,index) in xichePrice" :key="index" @click="selectItem(item,index)">
+          <div :class="{active:currIndex===index}" class="iconfont">
+            <van-icon name="checked" />
+          </div>
+          <span class="item-name">{{item.itemName}} </span>
+          <span class="item-money">￥<span>{{item.itemPrice}}</span></span>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <van-cell title="我的优惠券" icon="coupon" is-link :value="- this.couponMoney" :to="{path:'/xiche/charge/coupon', param: { couponId: this.couponId }}"/>
+    </div>
+    <div class="page-bottom">
+        <div class="xi-pay">
+          ￥<span class="xi-pay-money">24</span>起
+        </div>
+        <div class="xi-count">全城248家商户通用 </div>
+        <button class="xi-button">去买单</button>
+    </div>
+  </div>
+</template>
+<script>
+import { itemList, myCouponGreat } from '@/api/xiche'
+import { RadioGroup, Radio, Icon } from 'vant'
+import { localStorageTool } from '@/utils'
+export default {
+  data() {
+    return {
+      radio: '',
+      picIp: process.env.BASE_API,
+      xichePrice: [],
+      thisPrice: '',
+      currIndex: 0,
+      greatcoupon: {},
+      couponMoney: '无可用优惠券',
+      user: '',
+      couponId: ''
+    }
+  },
+  mounted() {
+    const { userInfo } = localStorageTool.getLocalStorage('userInfo') // 获取LocalStorage值
+    if (userInfo) { // 获取用户信息、
+      this.user = JSON.parse(userInfo)
+      if (this.$route.query.id) {
+        itemList({ companyId: this.$route.query.id, type: 0 }).then((data) => {
+          this.xichePrice = data.newList
+          this.thisPrice = this.xichePrice[0].itemPrice
+          this.GreatCoupon(this.thisPrice, this.user.id)
+        })
+      }
+    }
+  },
+  methods: {
+    selectItem(item, index) {
+      this.currIndex = index
+      this.thisPrice = item.itemPrice
+    },
+    GreatCoupon(paymoney, ownerid) {
+      myCouponGreat({ payMoney: paymoney, ownerId: ownerid }).then((data) => {
+        this.greatcoupon = data.new
+        if (this.greatcoupon.reduceMoney) {
+          this.couponMoney = this.greatcoupon.reduceMoney
+          this.couponId = this.greatcoupon.id
+        }
+      })
+    }
+  },
+  components: {
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio,
+    [Icon.name]: Icon
+  }
+}
+</script>
+<style scoped>
+  ul,li{
+    list-style: none;
+  }
+  .page-bottom{
+    position: fixed;
+    left: 0;
+    right:0;
+    bottom:0;
+    z-index: 5;
+    height: 50px;
+    background: #2d3c4b;
+  }
+  .xi-pay{
+    padding: 0 0.8rem 0 1.18rem;
+    font-size: 1.18rem;
+    color: #fa5a4b;
+    min-width: 23rem;
+    height: 50px;
+    line-height: 50px;
+    float: left;
+  }
+  .xi-pay-money{
+    font-size: 2.3rem;
+  }
+  .xi-count{
+    color: #fff;
+    position: absolute;
+    right: 11.45rem;
+    bottom: 0.63rem;
+    font-size: 1rem;
+  }
+  .xi-button{
+    width: 10rem;
+    height: 50px;
+    line-height: 50px;
+    font-weight: 600;
+    background: #fa5a4b;
+    color: #fff;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    font-size: 1.5rem;
+  }
+  .show-price{
+    padding: 2.37rem 0 2rem;
+    text-align: center;
+    background: #fff;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+  .price-detail{
+    font-size: 1.25rem;
+    color: #fa5a4b;
+    margin-bottom: 0.8rem;
+  }
+  .price-detail span{
+    font-size: 2rem;
+    margin-left: 0.4rem;
+    font-weight: 600;
+  }
+  .font-s{
+    color: #999;
+    font-size: 1rem;
+  }
+  .s-line{
+    width: 100%;
+    height: 0.25rem;
+    background: url(../../../assets/img/line.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: 0;
+  }
+  .price-item{
+    background: #fff;
+    margin: 0 0 0.8rem;
+  }
+  .price-item li{
+    font-size: 1.18rem;
+    padding:1.1rem 1.18rem;
+    box-shadow: 1.18rem 1px 0 rgba(0,0,0,0.04)
+  }
+  .iconfont{
+    color: #e6e6e6;
+    float: right;
+    font-size: 1.5rem;
+  }
+  .iconfont.active{
+    color: #fa5a4b;
+  }
+  .item-name{
+    width: 70%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .item-money{
+    color: #fa5a4b;
+    font-size: 1rem;
+  }
+  .item-money span{
+    font-size: 1.5rem;
+  }
+</style>

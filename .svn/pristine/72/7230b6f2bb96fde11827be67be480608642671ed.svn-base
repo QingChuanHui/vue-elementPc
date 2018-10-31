@@ -1,0 +1,30 @@
+import { localStorageTool } from '@/utils'
+const getCurrentC = function() {
+  const { currentCity } = localStorageTool.getLocalStorage('currentCity') // 获取LocalStorage值
+  if (currentCity) { // 地区有数据 赋值
+    return JSON.parse(currentCity)
+  } else { // 没有地区 赋值上海地区
+    return { city: '上海', id: '11' }
+  }
+}
+const cheFuData = {
+  state: {
+    currentCity: getCurrentC() // 当前城市
+  },
+  mutations: {
+    SET_CURRENTCITY: (state, currentCity) => {
+      state.currentCity = currentCity
+    }
+  },
+
+  actions: {
+    // 滚动到界面之前距离
+    scrollTo: ({ commit }, route) => {
+      if (route.meta.scrollTop) {
+        document.getElementsByClassName('view-router')[0].scrollTop = route.meta.scrollTop
+      }
+    }
+  }
+}
+
+export default cheFuData

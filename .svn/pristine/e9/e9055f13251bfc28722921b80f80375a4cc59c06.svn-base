@@ -1,0 +1,132 @@
+<template>
+  <div>
+     <van-nav-bar
+      :title="currentCity"
+      left-arrow
+      :fixed="true"
+      @click-left="onClickLeft"
+    />
+    <van-cell-group class="mTop">
+      <van-cell  title="石家庄" value="当前定位城市" icon="location" />
+    </van-cell-group>
+    <div class="areaTop">
+      <div style="height:2rem;line-height:2rem;">热门城市</div>
+      <div class="flexbox"  >
+        <div class="flexTop1" v-for="(item,index) in hotCity" :key="index"  @click="selectCity(item)" >
+          <div class="flex-city" >{{item.city}}</div>
+        </div>
+        <!-- <div class="flexTop1" >
+          <div class="flex-city" >北京</div>
+        </div>
+        <div class="flexTop1" >
+          <div class="flex-city" >重庆</div>
+        </div>
+        <div class="flexTop1" >
+          <div class="flex-city" >成都</div>
+        </div>
+        <div class="flexTop1" >
+          <div class="flex-city">浙江</div>
+        </div> -->
+      </div>
+    </div>
+    <div v-for="(item,index) in cityMark" :key="index"  v-if="bandProvince(item).length>0" >
+      <div style="margin-left:15px;" >{{item}}</div>
+      <van-cell-group>
+        <van-cell  v-for="(city,ci) in bandProvince(item)"  :key="ci"   :title="city.province"  @click="clickProvince(city.province)" />
+      </van-cell-group>
+    </div>
+    <van-popup v-model="showPopup" position="right" style="height:100%;width:60%;"   >
+      <div style="padding-left:15px;height:50px;line-height:50px;"  class="backColor" >{{cityP}}</div>
+      <van-cell-group>
+        <van-cell  v-for="(city,ci) in cityByP"  :key="ci"  :title="city.city"  />
+      </van-cell-group>
+    </van-popup>
+  </div>
+</template>
+<script>
+import { Popup } from 'vant'
+import { areaList } from '@/api/area'
+import { localStorageTool } from '@/utils'
+export default {
+  name: 'selectArea',
+  data() {
+    return {
+      currentCity: '当前城市-石家庄',
+      cityMark: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      assessList: [],
+      cityByP: [], // 选择省查找的数据
+      cityP: '',
+      hotCity: [], // 热门城市
+      showPopup: false // 是否显示右侧层
+    }
+  },
+  created() {
+    areaList({ pageNo: 0, pageSize: 1000, isShow: 1 }).then((data) => {
+      this.assessList = data.page.records// 赋值地区数据
+      this.hotCity = this.assessList.filter((item) => {
+        return item.isHot === 1
+      })
+    })
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    bandProvince(mark) {
+      const pData = this.assessList.filter((item) => {
+        return item.mark === mark
+      })
+      return pData
+    },
+    clickProvince(p) { // 点击省操作
+      this.cityByP = this.assessList.filter((item) => {
+        return item.province === p
+      })
+      if (this.cityByP.length === 1) {
+        this.selectCity(this.cityByP[0])
+      } else {
+        this.showPopup = true
+        this.cityP = p
+      }
+    },
+    selectCity(city) { // 选择市地区
+      localStorageTool.setLocalStorage({
+        'currentCity': JSON.stringify(city)
+      })
+      this.$store.commit('SET_CURRENTCITY', city)
+      // this.$router.go(-1)
+      window.location.replace('/')
+    }
+  },
+  components: {
+    [Popup.name]: Popup
+  }
+}
+</script>
+<style scoped>
+.areaTop{
+  padding:10px 15px;
+}
+.flexbox {
+  display:-webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+}
+.flexTop1{
+  /*-webkit-box-flex: 1;
+  -webkit-flex:1;
+  flex:1;*/
+  width:25%
+}
+.flex-city{
+  height: 2.5rem;
+  line-height:2.5rem;
+  text-align: center;
+  margin: 0 0.4rem;
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: solid 1px #dedbdb;
+}
+</style>
+

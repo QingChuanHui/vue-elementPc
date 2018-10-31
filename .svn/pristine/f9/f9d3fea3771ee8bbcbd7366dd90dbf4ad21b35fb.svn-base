@@ -1,0 +1,156 @@
+<template>
+  <div>
+    <van-nav-bar
+        title="填写爱车信息"
+        left-text=""
+        right-text=""
+        left-arrow
+        :fixed="true"
+        @click-left="onClickLeft"
+    />
+    <div class="mTop" style="margin-bottom:60px;">
+      <div class="ucd-excess">请完善以下信息便于更精确的为您推荐保养套餐 </div>
+      <div class="ucd-list">
+        <router-link tag='div' class="form-item form-item1" :to="{path:'/home/area'}">
+          <div class="form-label">城市</div>
+          <van-field type="text" placeholder="请选择城市" class="form-input" v-model="city" />
+        </router-link>
+        <div class="form-item">
+          <div class="form-label">车辆</div>
+          <van-field type="text" placeholder="请选择车辆" class="form-input" v-model="carCode"/>
+        </div>
+        <div class="form-item">
+          <div class="form-label">购车时间</div>
+          <van-datetime-picker
+            v-model="buyDate"
+            type="date"
+            :max-date="maxDate"
+          />
+        </div>
+        <div class="form-item">
+          <div class="form-label">行驶里程</div>
+          <van-field type="number" placeholder="请输入公里数" maxlength="6" class="form-input" v-model="carMile"/>
+          <div class="mileage">
+            <span>公里</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-bottom">
+      <van-button type="primary" bottom-action @click="addCar">保存</van-button>
+    </div>
+  </div>
+</template>
+<script>
+import { Field, Icon, Button, DatetimePicker } from 'vant'
+import { localStorageTool } from '@/utils'
+import { carAdd } from '@/api/user'
+export default {
+  data() {
+    return {
+      user: {},
+      maxDate: new Date(),
+      city: '',
+      carType: '',
+      buyDate: '',
+      carMile: ''
+    }
+  },
+  mounted() {
+    const { userInfo } = localStorageTool.getLocalStorage('userInfo') // 获取LocalStorage值
+    if (userInfo) { // 获取用户信息、
+      this.user = JSON.parse(userInfo)
+    }
+  },
+  created() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    addCar() {
+      carAdd({ ownerId: this.user.id, carType: this.carType, buyDate: this.buyDate, carMile: this.carMile, city: this.city }).then((data) => {
+        this.$toast('新增成功！')
+        this.$router.go(-1)
+      })
+    }
+  },
+  components: {
+    [Field.name]: Field,
+    [Icon.name]: Icon,
+    [Button.name]: Button,
+    [DatetimePicker.name]: DatetimePicker
+  }
+}
+</script>
+<style scoped>
+  .form-label{
+    font-size: 1.1rem;
+  }
+  .ucd-list{
+    margin: 0.8rem 0 0;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    background: #fff;
+    position: relative;
+  }
+  .form-item{
+    box-shadow: 1.18rem 1px 0 rgba(0,0,0,0.04);
+    padding: 1.18rem;
+    position: relative;
+    font-size: 1.18rem;
+  }
+  .form-item1::after{
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 1px solid #c3c3c3;
+    border-right: 1px solid #c3c3c3;
+    right: 1.6rem;
+    top: 50%;
+    -webkit-transform: rotate(45deg) translateY(-70%);
+    transform: rotate(45deg) translateY(-70%);
+  }
+  .form-input{
+    position: absolute;
+    width: 28%;
+    top:0; bottom: 0;
+    padding-right: 0;
+    left: 6rem;
+    color: #666;
+    font-size: 1rem;
+  }
+  input{
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: #666
+  }
+  .mileage{
+    color: #666;
+    position: absolute;
+    top: 50%;
+    right:1rem;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 1rem;
+  }
+  .ucd-excess{
+    height: 2rem;
+    line-height: 2rem;
+    color: #999;
+    margin-left: 1.18rem;
+  }
+  .page-bottom{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom:0;
+    right: 0;
+    width: 100%;
+    z-index: 5;
+  }
+  .page-bottom button{background: #fa5a4b}
+</style>
+

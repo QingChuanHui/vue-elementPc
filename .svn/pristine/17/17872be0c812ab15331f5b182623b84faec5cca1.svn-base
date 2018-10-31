@@ -1,0 +1,43 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="个人设置"
+      left-text=""
+      right-text=""
+      left-arrow
+      :fixed="true"
+      @click-left="onClickLeft"
+    />
+    <van-cell-group style="margin-top:54px;" >
+      <van-cell title="个人资料" value="" is-link :to="{path:'/user/userSetting/info'}"/>
+      <van-cell title="关于我们" value="" is-link :to="{path:'/user/userSetting/about'}"/>
+      <van-cell title="隐私声明" value="" is-link />
+    </van-cell-group>
+    <van-button size="large" style="margin-top:10px" @click="signOut">退出登录</van-button>
+  </div>
+</template>
+<script>
+import { CellGroup, Cell, Button } from 'vant'
+import { localStorageTool } from '@/utils'
+export default {
+  data() {
+    return {
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    signOut() {
+      localStorageTool.removeLocalStorage('token,userInfo')
+    }
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell,
+    [Button.name]: Button
+  }
+}
+</script>

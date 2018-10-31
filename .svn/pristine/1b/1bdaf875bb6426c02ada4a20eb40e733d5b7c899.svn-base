@@ -1,0 +1,7 @@
+const getters = {
+  token: state => state.user.token,
+  userInfo: state => state.user.userInfo,
+  userMenu: state => state.user.userMenu,
+  currentCity: state => state.cheFuData.currentCity
+}
+export default getters

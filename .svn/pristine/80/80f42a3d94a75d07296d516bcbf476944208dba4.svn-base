@@ -1,0 +1,79 @@
+
+<template>
+
+  <div>
+    <van-nav-bar
+      title="头条"
+      left-text=""
+      right-text=""
+      :left-arrow="false"
+      :fixed="true"
+    />
+    <div class="mTop">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+      >
+        <van-cell url="" v-for="(item) in list" :key="item">
+          <van-card
+              :title= item.title
+              :thumb= item.img
+            >
+              <div slot="thumb" class="news-img">
+                <img :src="item.img"/>
+              </div>
+              <div slot="footer">
+                <span>{{ item.author }}</span>
+                <div style="float:right">
+                  <img src="../../assets/logo.png" alt="" width="20" height="20" >
+                  <span>{{ item.PageViews }}</span>
+                </div>
+              </div>
+            </van-card>
+        </van-cell>
+      </van-list>
+    </div>
+  </div>
+</template>
+<script>
+import imageURL from '@/assets/logo.png'
+import { Card, Button, List, Cell } from 'vant'
+export default {
+  data() {
+    return {
+      imageURL: imageURL,
+      list: [
+        { title: '最容易吃罚单的就打交通标识', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', PageViews: '5000', author: '驷惠' },
+        { title: '一组图警示你一组图警示你一组图警示你一组图警示你', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', PageViews: '4500', author: '驷惠' }
+      ],
+      loading: false,
+      finished: true
+    }
+  },
+  mounted() {
+    const a = 1
+    if (a > 0) {
+
+    }
+  },
+  methods: {
+  },
+  components: {
+    [Card.name]: Card,
+    [Button.name]: Button,
+    [List.name]: List,
+    [Cell.name]: Cell
+  }
+}
+</script>
+<style scoped>
+ .news-img{
+   width: 8.67rem;
+   height: 5.91rem;
+   border-radius: 0.32rem;
+  }
+  .news-img img{
+    width:100%;
+    height: 100%;
+  }
+</style>

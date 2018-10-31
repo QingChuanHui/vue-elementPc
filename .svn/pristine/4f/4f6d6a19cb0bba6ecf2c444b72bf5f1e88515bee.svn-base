@@ -1,0 +1,41 @@
+<template>
+  <div class="mTop">
+    <van-nav-bar
+        title="我的车"
+        left-text=""
+        right-text=""
+        left-arrow
+        :fixed="true"
+        @click-left="onClickLeft"
+    />
+    <van-cell>
+      <div class="my-wrap"></div>
+    </van-cell>
+  </div>
+</template>
+<script>
+import { CellGroup, Cell } from 'vant'
+export default {
+  data() {
+    return {
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    }
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell
+  }
+}
+</script>
+<style scoped>
+.my-wrap{
+  margin-bottom: 0.8rem;
+}
+</style>
+

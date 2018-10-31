@@ -1,0 +1,71 @@
+<template>
+  <div class="home" >
+    <van-nav-bar
+      :left-arrow="true"
+      :fixed="true"
+      title="兑换结果"
+      left-text=""
+      right-text=""
+      @click-left="onClickLeft"
+    />
+    <div class="mTop" style="text-align:center">
+      <van-icon name="passed" class="ok" style="margin-top:50px;" />
+      <div>恭喜，兑换成功</div>
+    </div>
+    <van-cell-group class="topGroup" >
+      <van-cell title="积分"  :value="integralOK.integralValue"  >
+      </van-cell>
+      <van-cell title="订单编号"  :value="integralOK.billNo"  >
+      </van-cell>
+      <van-cell title="下单时间"  :value="integralOK.billDate"  >
+      </van-cell>
+    </van-cell-group>
+    <van-cell-group class="topGroup" style="margin-bottom:50px;">
+      <van-cell title="您的兑换已经成功，请及时使用哦" >
+      </van-cell>
+    </van-cell-group>
+    <section class="dui-footer" >
+      <van-button type="danger" size="large"   @click="sureIngegrall()" >
+        立即使用
+      </van-button>
+    </section>
+  </div>
+</template>
+<script>
+import { Button } from 'vant'
+import { createIntegralBill } from '@/api/integral'
+export default {
+  data() {
+    return {
+      integralOK: {} // 门店详细
+    }
+  },
+  mounted() {
+    if (this.$route.params.integralBill) {
+      this.integralOK = this.$route.params.integralBill
+      this.integralOK.integralValue = this.$route.params.integralValue
+    }
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    sureIngegrall() {
+      createIntegralBill({ ownerId: this.user.id, integralGoodsId: this.integralDetail.id }).then((data) => {
+      })
+    }
+  },
+  components: {
+    [Button.name]: Button
+  }
+}
+</script>
+<style scoped>
+ .dui-footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+</style>
+

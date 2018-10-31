@@ -1,0 +1,175 @@
+<template class="main">
+  <div>
+    <!--<van-cell-group>
+      <van-cell title="新闻详情" value="新闻详情" />
+    </van-cell-group>-->
+    <div class="news-detail">
+      <div class="news-title">最容易吃罚单的九大交通标识，第一个你就可能弄错 </div>
+      <div class="news-bottom">
+        <span class="news-author">驷惠</span>
+        <span class="news-time">2018-05-21 07:57</span>
+        <div class="news-visited">
+            <van-icon name="password-view"/>
+            <span>4200</span>
+        </div>
+      </div>
+      <div>
+        详细信息
+        <p class="source">本文来源于网络</p>
+        <button class="like">
+          <van-icon name="like"/>
+          13
+        </button>
+      </div>
+      <div class="topGroup" >
+        <van-cell title="全部评论"  icon="wap-nav" />
+        <van-list v-model="loading" :finished="finished" @load="onLoad"  class="backColor">
+          <van-cell v-for="(item,index) in commentList" :key="index">
+            <div class="content">
+              <div class="bg-cut">
+                <img :src="item.img"/>
+              </div>
+              <div class="comment-views">
+                <van-icon name="like"/>
+                <span>{{item.views}}</span>
+              </div>
+              <div class="content-name">{{item.name}}</div>
+              <div class="content-time">{{item.time}}</div>
+              <div class="content-content">{{item.content}}</div>
+            </div>
+          </van-cell>
+        </van-list>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { CellGroup, Cell, List } from 'vant'
+export default {
+  data() {
+    return {
+      commentList: [
+        { name: '张三', time: '2018-05-22 09:16', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', content: '最容易吃罚单的九大交通标识，第一个你就可能弄错', views: '40' },
+        { name: '张三', time: '2018-05-22 09:16', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', content: '问下以前的老司机会这些吗？懂这些理论标示标线吗？基本交警手势八种会吗？跟车加速网状等等标线会吗？你可以车开的很棒……但是安全开车专业开车你就不一定最棒……没事希望那些老司机多看看理论科目三和科目一习题…… ', views: '50' }
+      ],
+      loading: false,
+      finished: false
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onLoad() {
+      setTimeout(() => {
+        for (let i = 0; i < 2; i++) {
+          this.commentList.push(this.commentList.length + 1)
+        }
+        this.loading = false
+
+        if (this.commentList.length >= 2) {
+          this.finished = true
+        }
+      }, 1000)
+    }
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell,
+    [List.name]: List
+  }
+}
+</script>
+<style scoped>
+.main{
+  height:100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.news-detail{
+  background: #fff;
+  word-break: break-all;
+  -webkit-text-align:justify;
+  text-align: justify;
+  padding: 1.89rem 1.18rem 1.18rem;
+}
+.news-detail p{
+  word-break: break-all;
+  padding:0.55rem 0;
+  line-height:2rem;
+}
+.news-title{
+  color:#333;
+  font-size: 1.73rem;
+  line-height: 1.97rem;
+  font-weight: 700;
+}
+.news-bottom{
+    font-size: 1rem;
+    padding:1.18rem 0;
+  }
+  .news-author{
+    color: #666;
+  }
+  .news-visited{
+    float: right;
+
+  }
+.news-time{
+  color: #999;
+  margin-left:0.39rem;
+}
+.source{
+  font-size: 1rem;
+  color: rgb(191,191,191)
+}
+.topGroup{
+    margin-top: 0.7rem;
+  }
+.like{
+  margin: 0.4rem auto 0;
+  padding: 0.35rem 0.75rem 0.4rem;
+  border-radius: 1.73rem;
+  border: 1px solid #e5e4e4;
+  background: #fff;
+  min-width: 6.5rem;
+  font-size: 1.25rem;
+  display: block;
+}
+.content{
+  margin-bottom: 0.7rem;
+  padding: 0.8rem 1.18rem 0.8rem 3.75rem;
+  position: relative;
+  /*box-shadow: 1.18rem 1px 0 rgba(0,0,0,0.04)*/
+}
+.bg-cut{
+  width: 2.76rem;
+  height: 2.76rem;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+}
+.bg-cut img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.comment-views{
+  color:#999;
+  float:right
+}
+.content-name{
+  display: inline-block;
+  color: #666;
+}
+.content-time{
+  color: #999;
+  font-size: 0.9rem;
+}
+.content-content{
+  word-break: break-all;
+  font-size: 1.18rem;
+}
+</style>
+

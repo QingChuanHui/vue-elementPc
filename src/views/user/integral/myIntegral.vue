@@ -1,0 +1,129 @@
+<template>
+  <div class="home" >
+    <van-nav-bar
+      :left-arrow="true"
+      :fixed="true"
+      title="我的积分"
+      left-text=""
+      right-text=""
+      @click-left="onClickLeft"
+    />
+    <div class="top-bg mTop" >
+      <div class="top-bgt">积分</div>
+      <div class="top-bgmain">{{user.totalIntegral}}&nbsp;<van-icon name="exchange"  style="font-size:1.5rem;" /></div>
+    </div>
+    <div class="detail-jf">
+      <div class="leftdetail-jf"><div class="botton" @click="urlTo('/user/integral')" >积分兑换</div> </div>
+      <div class="rightdetail-jf" @click="urlTo('/user/myIntegral/integralRecord')">明细&nbsp;></div>
+    </div>
+    <van-cell-group class="topGroup" style="margin-bottom:50px;">
+      <van-cell title="每日任务"  icon="wap-nav" />
+      <van-cell title="签到"  icon="sign" is-link :value="qtext" @click="jifenAdd()"  />
+      <van-cell title="评论"  icon="edit-data" is-link />
+      <van-cell title="完成订单"  icon="edit" is-link/>
+    </van-cell-group>
+  </div>
+</template>
+<script>
+import {} from 'vant'
+import { localStorageTool } from '@/utils'
+import { integralInsert, getTaskCount } from '@/api/user'
+import { getUser } from '@/api/login'
+export default {
+  data() {
+    return {
+      user: {},
+      qtext: '0/1'
+    }
+  },
+  mounted() {
+    const { userInfo } = localStorageTool.getLocalStorage('userInfo') // 获取LocalStorage值
+    if (userInfo) { // 获取用户信息、
+      this.user = JSON.parse(userInfo)
+    } else {
+      this.user = {}
+    }
+    this.getTaskCount()
+  },
+  methods: {
+    jifenAdd() {
+      if (this.qtext === '0/1') {
+        integralInsert({ ownerId: this.user.id, taskName: '签到', type: 0 }).then((data) => { // 获取数据
+          this.$toast('签到成功')
+          getUser().then((datad) => {
+            this.user.totalIntegral = datad.new.totalIntegral
+            localStorageTool.setLocalStorage({
+              'userInfo': JSON.stringify(datad.new) // data.token
+            })
+          })
+          this.getTaskCount()
+        })
+      } else {
+        this.$toast('已签到')
+      }
+    },
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    urlTo(tourl) {
+      this.$router.push({ path: tourl })
+    },
+    getTaskCount() {
+      getTaskCount({ ownerId: this.user.id, taskName: '签到' }).then((data) => { // 获取数据
+        const count = data.new
+        if (count >= 1) {
+          this.qtext = '1/1'
+        }
+      })
+    }
+  },
+  components: {
+  }
+}
+</script>
+<style scoped>
+.top-bg{
+  width:100%;
+  height: 9.3rem;
+  background-color: #ffb414;
+  color:#fff;
+}
+.top-bgt{
+  margin-left:15px;
+  padding-top: 15px;
+}
+.top-bgmain{
+  text-align: center;
+  font-size: 2rem;
+  height: 5rem;
+  line-height: 5rem;
+}
+.detail-jf{
+  display:flex;
+  height: 3rem;
+  line-height: 3rem;
+  background-color: #ffa028;
+  color: #fff;
+}
+.leftdetail-jf{
+  flex: 1;
+  margin-left: 15px;
+  text-align: left;
+}
+.rightdetail-jf{
+  flex: 1;
+  margin-right: 15px;
+  text-align: right;
+}
+.botton{
+  background-color: #fff;
+  width: 100px;
+  height: 2rem;
+  line-height: 2rem;
+  margin-top: 0.5rem;
+  border-radius: 50px;
+  color: #ffa028;
+  text-align: center;
+}
+</style>
+

@@ -1,0 +1,72 @@
+<template>
+  <div id="app">
+    <transition :name="transitionName" mode="out-in" >
+      <router-view  class="view-router" ></router-view>
+    </transition>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  data() {
+    return {
+      transitionName: 'slide-right' // 默认动态路由变化为slide-right
+      // cssH: {
+      //   'height': (window.innerHeight - 50) + 'px',
+      // },
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      const toLength = to.fullPath.split('/').length// 路由层级高向层级低动画返回，低到高前进
+      const fromlength = from.fullPath.split('/').length
+      if (from.meta.keepAlive) { // 有缓存界面添加滚动距离参数
+        from.meta.scrollTop = document.getElementsByClassName('view-router')[0].scrollTop
+      }
+      if (toLength < fromlength) {
+        this.transitionName = 'slide-right'
+      } else {
+        this.transitionName = 'slide-left'
+      }
+    }
+  },
+  methods: {
+    scrollTo() {
+      if (this.$route.meta.scrollTop) {
+        document.getElementsByClassName('view-router')[0].scrollTop = this.$route.meta.scrollTop
+      }
+    }
+  }
+}
+</script>
+<style lang="scss" src="@/assets/css/global.scss" />
+<style>
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+.view-router {
+ position: absolute;
+ width:100%;
+ height: 100%;
+ padding-bottom: 50px;
+ overflow-x: hidden;
+ overflow-y: scroll;
+ transition: all .8s cubic-bezier(.55,0,.1,1);
+}
+.slide-left-enter, .slide-right-leave-active {
+ opacity: 0;
+ -webkit-transform: translate(50%, 0);
+ transform: translate(50%, 0);
+}
+.slide-left-leave-active, .slide-right-enter {
+ opacity: 0;
+ -webkit-transform: translate(-50%, 0);
+ transform: translate(-50%, 0);
+}
+</style>

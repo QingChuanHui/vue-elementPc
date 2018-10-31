@@ -1,0 +1,9 @@
+import request from '@/utils/axios'
+
+/**
+ * 获取积分商品和优惠券
+ * @param {*参数} param
+ */
+export function getIntegralList(param) {
+  return request.fetchPost('/v1/integralGoods/selectList', param)
+}

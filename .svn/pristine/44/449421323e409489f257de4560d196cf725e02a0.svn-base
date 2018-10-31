@@ -1,0 +1,40 @@
+<template>
+  <div>
+    <transition name="fade" mode="out-in">
+      <router-view class="child-view" ></router-view>
+    </transition>
+    <tabbar></tabbar>
+  </div>
+</template>
+
+<script>
+import tabbar from './tabbar'
+export default {
+  name: 'app',
+  components: {
+    tabbar
+  },
+  data() {
+    return {
+      transitionName: 'forward'
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    to.query.isL = 0
+    if (from.path === '/') { // 初始化界面 表示1
+      to.query.isL = 1
+    }
+    next()
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+    })
+  }
+}
+</script>
+
+<style>
+.child-view{
+   margin-bottom: 50px;
+}
+</style>

@@ -1,0 +1,39 @@
+export default [
+  {
+    path: '/user/userSetting',
+    name: '用户设置',
+    component: resolve => require(['@/views/user/userSetting'], resolve)
+  },
+  {
+    path: '/user/myCar',
+    name: '我的车辆',
+    component: resolve => require(['@/views/user/myCar'], resolve)
+  },
+  {
+    path: '/user/myCar/caredit',
+    name: '编辑我的车',
+    meta: { keepAlive: true },
+    component: resolve => require(['@/views/user/caredit'], resolve)
+  },
+  {
+    path: '/user/myCar/carAdd',
+    name: '填写爱车信息',
+    meta: { keepAlive: true },
+    component: resolve => require(['@/views/user/carAdd'], resolve)
+  },
+  {
+    path: '/user/myCar/selectBrand',
+    name: '选品牌',
+    component: resolve => require(['@/components/selectCarType/brand'], resolve)
+  },
+  {
+    path: '/user/myCar/selectYear',
+    name: '选年款',
+    component: resolve => require(['@/components/selectCarType/modelYear'], resolve)
+  },
+  {
+    path: '/user/myOrder',
+    name: '我的订单',
+    component: resolve => require(['@/views/user/orderList/orderList'], resolve)
+  }
+]

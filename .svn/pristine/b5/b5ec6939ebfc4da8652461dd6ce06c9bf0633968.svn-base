@@ -1,0 +1,106 @@
+<template>
+  <van-list v-model="loading" :finished="finished" @load="onLoad" >
+    <van-cell v-for="(item,index) in assessList" :key="index" >
+      <div class="show-top">
+        <div class="show-user-photo"   v-lazy:background-image="topImg" ></div>
+        <div class="show-name-date">
+          <div>简自豪</div>
+          <div style="color:rgb(177, 173, 173)">2018-5-23 11:39:00</div>
+        </div>
+      </div>
+      <van-row  class="showCarType">
+        <van-col span="10">
+          车型：大众 宝来
+        </van-col>
+        <van-col span="14">
+          花费：￥1152<span style="color:red;" >（省￥500）</span>
+        </van-col>
+      </van-row>
+      <div class="show-cont" >虽然4S店重新装修中，但是休息区还是非常舒服的，保养顾问的招待服务态度非常棒的，工作日最好早早的来，否则会排队比较久，最后洗车的...<span style="color:#64739c">更多</span> </div>
+      <div class="flexbox"  >
+        <div class="flexTop1" >
+          <div class="flex-img" v-lazy:background-image="adImg"></div>
+        </div>
+        <div class="flexTop1" >
+          <div class="flex-img" v-lazy:background-image="adImg"></div>
+        </div>
+        <div class="flexTop1" >
+          <div class="flex-img" v-lazy:background-image="adImg"></div>
+        </div>
+      </div>
+    </van-cell>
+  </van-list>
+</template>
+<script>
+import { Cell, List, Row, Col } from 'vant'
+export default {
+  name: 'comment',
+  data() {
+    return {
+      assessList: [{ title: '撒开了的即可垃圾的时刻拉家带口垃圾毒素快乐圣诞节快来看' }], // 数据列表
+      finished: false, // 是否没有数据
+      loading: false,
+      topImg: 'https://ocpvd2g2n.qnssl.com/userInfo/pro_OVuW7P011BIpTjsdIMdy.jpg',
+      adImg: 'https://ocpvh3dgz.qnssl.com/public/2018/5/22/9147777f31e1e33cfd40da784041b01c.jpg-thumbnail'
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onLoad() {
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          this.assessList.push(this.assessList.length + 1)
+        }
+        this.loading = false
+
+        if (this.assessList.length >= 50) {
+          this.finished = true
+        }
+      }, 1000)
+    }
+  },
+  components: {
+    [Cell.name]: Cell,
+    [List.name]: List,
+    [Row.name]: Row,
+    [Col.name]: Col
+  }
+}
+</script>
+<style scoped>
+.show-top{
+   height: 3.5rem;
+}
+.show-user-photo{
+  float:left;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-size: 100% 100%;
+  margin-right: 1rem;
+}
+.show-name-date{
+  float: left;
+}
+.showCarType{
+  clear:both;margin-top:0.8rem;
+  color:rgb(177, 173, 173);
+}
+.show-cont{
+  margin-top: 0.8rem;
+}
+.flexbox {
+  background-color: #fff;
+  display:-webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.flexTop1{
+  -webkit-box-flex: 1;
+  -webkit-flex:1;
+  flex:1;
+}
+.flex-img{margin: 5px;padding: 0 10px; background: no-repeat center;height: 9rem; background-size: cover}
+</style>
+

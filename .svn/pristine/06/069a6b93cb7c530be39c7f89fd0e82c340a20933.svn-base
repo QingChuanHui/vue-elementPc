@@ -1,0 +1,128 @@
+
+<template>
+
+  <div>
+    <van-nav-bar
+      title="头条"
+      left-text=""
+      right-text=""
+      :left-arrow="false"
+      :fixed="true"
+    />
+    <div class="mTop">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+      >
+        <van-cell url="" v-for="(item,index) in list" :key="index">
+          <!--<van-card
+              :title= item.title
+              :thumb= item.img
+            >
+              <div slot="thumb" class="news-img">
+                <img :src="item.img"/>
+              </div>
+              <div slot="footer">
+                <span>{{ item.author }}</span>
+                <div style="float:right">
+                  <img src="../../assets/logo.png" alt="" width="20" height="20" >
+                  <span>{{ item.PageViews }}</span>
+                </div>
+              </div>
+            </van-card>-->
+            <div class="news-items">
+              <div class="news-img">
+                <img :src="item.img"/>
+              </div>
+              <div class="news-content">
+                <div class="news-title">{{ item.title }}</div>
+              <div class="news-bottom">
+                <span class="news-author">{{ item.author }}</span>
+                <div class="news-visited">
+                  <van-icon name="password-view"/>
+                  <span>{{ item.PageViews }}</span>
+                </div>
+              </div>
+              </div>
+            </div>
+        </van-cell>
+      </van-list>
+    </div>
+  </div>
+</template>
+<script>
+import imageURL from '@/assets/logo.png'
+import { Card, Button, List, Cell, Icon } from 'vant'
+export default {
+  data() {
+    return {
+      imageURL: imageURL,
+      list: [
+        { title: '最容易吃罚单的就打交通标识', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', PageViews: '5000', author: '驷惠' },
+        { title: '一组图警示你一组图警示你一组图警示你一组图警示你一组图警示你', img: 'https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a281c27ca764034f10cdc4069fc27980/622762d0f703918f4996316b5d3d269758eec4c8.jpg', PageViews: '4500', author: '驷惠' }
+      ],
+      loading: false,
+      finished: true
+    }
+  },
+  mounted() {
+    const a = 1
+    if (a > 0) {
+
+    }
+  },
+  methods: {
+  },
+  components: {
+    [Card.name]: Card,
+    [Button.name]: Button,
+    [List.name]: List,
+    [Cell.name]: Cell,
+    [Icon.name]: Icon
+  }
+}
+</script>
+<style scoped>
+ .news-item{
+   position: relative;
+   padding: 0.79rem 1.18rem;
+   font-size: 1.18rem;
+ }
+ .news-img{
+   width: 8.67rem;
+   height: 5.91rem;
+   border-radius: 0.32rem;
+  }
+  .news-img img{
+    width:100%;
+    height: 100%;
+  }
+  .news-content{
+    position: absolute;
+    left: 10.5rem;
+    right:0.8rem;
+    top: 0.5rem;
+    height:5.91rem;
+  }
+  .news-title{
+    color: #333;
+    font-size: 1.18rem;
+    margin-top: 0.08rem;
+    display: -webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .news-bottom{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    color: #999;
+    font-size: 0.95rem;
+  }
+  .news-visited{
+    float: right;
+  }
+</style>

@@ -1,0 +1,96 @@
+var dsBridge = require('dsbridge')
+export default {
+  /**
+   * 车牌
+   */
+  CarCode: (backFunction) => {
+    dsBridge.call('CarCode', backFunction)
+  },
+  /**
+   * 车牌
+   */
+  ScanCode: (backFunction) => {
+    dsBridge.call('ScanCode', backFunction)
+  },
+  /**
+   * 行驶证
+   */
+  CarRunRead: (backFunction) => {
+    dsBridge.call('CarRunRead', backFunction)
+  },
+  /**
+   * vin
+   */
+  VINCode: (backFunction) => {
+    dsBridge.call('VINCode', backFunction)
+  },
+  /**
+   * 经纬度
+   */
+  LatAndLon: (backFunction) => {
+    dsBridge.call('LatAndLon', backFunction)
+  },
+  /**
+   * 打开地图导航
+   */
+  OpenMap: (code) => {
+    dsBridge.call('OpenMap', { code: code }, () => {})
+  },
+  /**
+   * 语音开始
+   */
+  Voice: (backFunction) => {
+    dsBridge.call('Voice', backFunction)
+  },
+  VoiceCancel: (backFunction) => {
+    dsBridge.call('VoiceCancel', backFunction)
+  },
+  VoiceStop: (backFunction) => {
+    dsBridge.call('VoiceStop', backFunction)
+  },
+  // 接口
+  Interface: (backFunction) => {
+    dsBridge.call('Interface', backFunction)
+  },
+  // 缓存功能
+  Storage: (backFunction) => {
+    dsBridge.call('Storage', backFunction)
+  },
+  // 更新
+  Update: (backFunction, code) => {
+    dsBridge.call('Update', { code: code }, backFunction)
+  },
+  // 热更新
+  HotUpdate: (backFunction) => {
+    dsBridge.call('HotUpdate', backFunction)
+  },
+  // 推送信息
+  PushInfo: (backFunction) => {
+    dsBridge.call('PushInfo', backFunction)
+  },
+  /*
+  * 调用 原生图片 拍照
+  * */
+  Picture: (backFunction) => {
+    dsBridge.call('Picture', backFunction)
+  },
+
+  /*
+ * 调用 打电话
+ * */
+  Mobile: (backFunction, code) => {
+    dsBridge.call('Mobile', { code: code }, backFunction)
+  },
+  /**
+   * 显示原生的loading 层
+   */
+  Loading: () => {
+    dsBridge.call('Loading')
+  },
+  /**
+   * 关闭原生的loading 层
+   */
+  CloseLoading: () => {
+    dsBridge.call('CloseLoading')
+  }
+}

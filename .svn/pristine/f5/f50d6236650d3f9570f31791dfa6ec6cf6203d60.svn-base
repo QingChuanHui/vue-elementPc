@@ -1,0 +1,91 @@
+<template>
+  <div class="multiQuery" >
+    <div class="page-top">
+      <div class="flex-wrap">
+        <div class="flex top-item"   @click="showType=!showType"  :class="{active:showType}"  >
+          品牌
+        </div>
+        <div class="vertical-line"></div>
+        <div class="flex top-item">
+          推荐排序
+        </div>
+      </div>
+    </div>
+    <van-popup v-model="showType"  position="top" :overlay="true" style="top:88px;" transition="popup-fade" >
+      <van-cell-group>
+        <van-cell title="洗车" value="内容" />
+        <van-cell title="维修" value="内容"  />
+         <van-cell title="维修" value="内容"  />
+         <van-cell title="维修" value="内容"  />
+         <van-cell title="维修" value="内容"  />
+         <van-cell title="维修" value="内容"  />
+         <van-cell title="维修" value="内容"  />
+      </van-cell-group>
+    </van-popup>
+  </div>
+</template>
+<script>
+import { Popup } from 'vant'
+export default {
+  name: 'multiQuery',
+  data() {
+    return {
+      list: [],
+      kindList: [],
+      showType: true
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  },
+  components: {
+    [Popup.name]: Popup
+  }
+}
+</script>
+<style   lang='scss' >
+.multiQuery{
+  .active{
+    color: red;
+  }
+  .van-modal{
+    top:88px;
+  }
+  .page-top{
+   position: fixed;
+   top: 46px;
+   left: 0;
+   z-index: 1;
+   width: 100%;
+  }
+  .flex-wrap{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #ededee;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+  }
+  .flex{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  .vertical-line{
+    position: relative;
+  }
+  .vertical-line::after{
+    top: 5px;
+    bottom: 5px;
+    background: #ccc;
+    content: '';
+    width: 1px;
+    position: absolute;
+    -webkit-transform: scale(0.5,1);
+    transform: scale(0.5,1)
+  }
+}
+</style>

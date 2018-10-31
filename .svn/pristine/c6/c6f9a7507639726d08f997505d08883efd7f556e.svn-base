@@ -1,0 +1,22 @@
+<template>
+  <van-cell-group>
+     <van-cell title="我的" value="个人设置" />
+  </van-cell-group>
+</template>
+<script>
+import { CellGroup, Cell } from 'vant'
+export default {
+  data() {
+    return {
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell
+  }
+}
+</script>

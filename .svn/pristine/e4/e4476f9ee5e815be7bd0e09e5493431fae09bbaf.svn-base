@@ -1,0 +1,79 @@
+<template>
+  <div class="home" >
+    <van-nav-bar    :left-arrow="true"  :fixed="true"  title="门店详情" left-text="返回" right-text="" @click-left="onClickLeft" >
+    </van-nav-bar>
+    <van-swipe :autoplay="3000" style="height:11rem;" class="mTop" >
+      <van-swipe-item v-for="(img,index) in shopDetail.baseCompanyPicList" :key="index">
+        <img  v-lazy="picUrl+img.path"  height="100%" width="100%"  />
+      </van-swipe-item>
+    </van-swipe>
+    <van-cell-group   >
+      <van-cell :title="shopDetail.companyName"  >
+         <van-icon slot="right-icon" name="phone" class="van-cell__right-icon" />
+      </van-cell>
+      <van-cell  >
+        <div class="sort">
+          <span><span class="sort-large">{{ shopDetail.score ? shopDetail.score : 0}}</span>分</span>
+          <div class="sort-right">
+            <span class="sort-large">8km</span>
+          </div>
+        </div>
+      </van-cell>
+      <van-cell :title="shopDetail.address"  >
+         <van-icon slot="right-icon" name="location" class="van-cell__right-icon" />
+      </van-cell>
+    </van-cell-group>
+    <van-cell-group  class="topGroup" >
+      <van-cell title="车主评价"  icon="wap-nav" />
+      <comment></comment>
+    </van-cell-group>
+  </div>
+</template>
+<script>
+import { Swipe, SwipeItem } from 'vant'
+import comment from '@/components/comment'
+import { getShopDetail } from '@/api/shop'
+export default {
+  data() {
+    return {
+      picUrl: process.env.BASE_API,
+      imgList: [], // 轮播图
+      shopDetail: {} // 门店详细
+    }
+  },
+  mounted() {
+    if (this.$route.query.id) {
+      getShopDetail({ id: this.$route.query.id }).then((data) => {
+        this.shopDetail = data.new
+      })
+    }
+  },
+  activated() {
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    }
+  },
+  components: {
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem,
+    comment
+  }
+}
+</script>
+<style scoped>
+ .sort{
+    color: #fa5a4b;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .sort-large{ font-size: 1.18rem}
+  .sort-right{
+    float: right;
+  }
+  .topGroup{
+    margin-top: 0.7rem;
+  }
+</style>
+

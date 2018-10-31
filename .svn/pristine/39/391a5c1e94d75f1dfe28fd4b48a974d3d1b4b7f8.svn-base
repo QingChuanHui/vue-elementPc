@@ -1,0 +1,106 @@
+<template>
+  <div class="home" >
+    <van-cell-group>
+      <van-swipe :autoplay="3000" style="height:150px;  ">
+          <van-swipe-item v-for="(img,index) in imgList" :key="index">
+            <img style="background-size: cover; -moz-background-size: cover;" v-lazy="img"  height="100%" width="100%" />
+          </van-swipe-item>
+      </van-swipe>
+      <van-cell>
+        <div class="flexbox"  >
+          <div class="flexTop1"  >
+            <div class="iconimg">
+              <img src="../../assets/logo.png" alt="">
+            </div>
+            <div class="itemname" style="font-size:10px;">
+              未派工
+            </div>
+          </div>
+          <div class="flexTop1" >
+            <div class="iconimg">
+              <img src="../../assets/logo.png" alt="">
+            </div>
+            <div class="itemname">
+              待结算
+            </div>
+          </div>
+          <div class="flexTop1" >
+            <div class="iconimg">
+              <img src="../../assets/logo.png" alt="">
+            </div>
+            <div class="itemname">
+              待结算
+            </div>
+          </div>
+          <div class="flexTop1" >
+            <div class="iconimg">
+              <img src="../../assets/logo.png" alt="">
+            </div>
+            <div class="itemname">
+              待结算
+            </div>
+          </div>
+          <div class="flexTop1" >
+            <div class="iconimg">
+              <img src="../../assets/logo.png" alt="">
+            </div>
+            <div class="itemname">
+              待结算
+            </div>
+          </div>
+        </div>
+      </van-cell>
+      <van-cell title="单元格" value="首页" />
+      <van-cell title="用户" value="个人设置"  :to="{path:'/user/userSetting'}" />
+        <!-- <p class="divider"  >
+          我是有底线的
+        </p> -->
+    </van-cell-group>
+  </div>
+</template>
+<script>
+import { CellGroup, Cell, Swipe, SwipeItem } from 'vant'
+export default {
+  data() {
+    return {
+      imgList: [
+        'https://ocpvgmewj.qnssl.com/mkt_banner_ad/banner_ad_iphone_img/20180502/6c578918-d744-42ab-abde-69736b8f0766.jpg',
+        'https://img.yzcdn.cn/public_files/2017/09/05/4e3ea0898b1c2c416eec8c11c5360833.jpg'
+      ]
+    }
+  },
+  mounted() {
+  },
+  methods: {
+  },
+  components: {
+    [CellGroup.name]: CellGroup,
+    [Cell.name]: Cell,
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem
+  }
+}
+</script>
+<style scoped>
+  .flexTop1 img {
+    width: 25px;
+    height: 25px;
+  }
+  .flexbox {
+    padding: 8px 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    text-align: center;
+  }
+  .flexTop1{
+     flex: 0 0 25%;
+     margin-top: 10px;
+    position: relative;
+  }
+  .itemname {
+    font-size: 12px;
+    color: #666;
+  }
+</style>
+

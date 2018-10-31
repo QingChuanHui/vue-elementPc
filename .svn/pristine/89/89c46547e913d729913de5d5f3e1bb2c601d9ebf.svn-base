@@ -1,0 +1,103 @@
+<template>
+  <div class="home" >
+    <van-nav-bar
+      :left-arrow="true"
+      :fixed="true"
+      title="积分明细"
+      left-text=""
+      right-text=""
+      @click-left="onClickLeft"
+    />
+    <van-tabs v-model="active" style="position:fixed;top:45px;width:100%;z-index:10px;">
+      <van-tab  title="全部"></van-tab>
+      <van-tab  title="收入"></van-tab>
+      <van-tab  title="支出"></van-tab>
+    </van-tabs>
+    <scroll  ref="scroll" :data="list"  :style="cssH"  :pullDownRefresh="true" :pullUpLoad="!noMore"   @pullingDown="onPullingDown" @pullingUp="onPullingUp" v-show="!isEmpty" style="margin-top:92px"  >
+      <van-cell v-for="(item,index) in list" :key="index" :to="{path:'/user/integral/integralLog/detail', query: { id: item.id }}"  >
+        <div style="width:90%;float:left;">
+          <div style="height:1.5rem;line-height:1.5rem;">{{item.taskName}}</div>
+          <div style="height:1.5rem;line-height:1.5rem;color:#999;">{{item.createDate}}</div>
+        </div>
+        <div style="width:10%;float:left;height:3rem;line-height:3rem;font-weight:bold;font-size:1.2rem;" :class="{inPay:item.type==='0',outPay:item.type!=='0'}" >{{item.integralValue}}</div>
+      </van-cell>
+    </scroll>
+    <is-empty v-model="isEmpty" >抱歉,没有最新消息</is-empty>
+  </div>
+</template>
+<script>
+import { integralLog } from '@/api/integral'
+import Scroll from '@/components/scroll/scroll.vue'
+import betterScroll from '@/mixins/betterScroll'
+import { localStorageTool } from '@/utils'
+import IsEmpty from '@/components/is-empty/'
+import { Tab, Tabs } from 'vant'
+export default {
+  mixins: [betterScroll],
+  data() {
+    return {
+      picUrl: process.env.BASE_API,
+      list: [],
+      user: {},
+      active: 0,
+      cssH: {
+        'height': (window.innerHeight - 92) + 'px'
+      }
+    }
+  },
+  watch: {
+    active(newV) {
+      this.resetInit()
+    }
+  },
+  mounted() {
+    const { userInfo } = localStorageTool.getLocalStorage('userInfo') // 获取LocalStorage值
+    if (userInfo) { // 获取用户信息、
+      this.user = JSON.parse(userInfo)
+    } else {
+      this.user = {}
+    }
+    this.resetInit()
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1)
+    },
+    async initData() {
+      const paramData = { pageNo: this.pages.currPage, pageSize: this.pages.perPage, ownerId: this.user.id }
+      if (this.active === 1) {
+        paramData.type = 0
+      } else if (this.active === 2) {
+        paramData.type = 1
+      } else {
+
+      }
+      const total = await integralLog(paramData, true).then((ret) => {
+        if (ret.page.records) {
+          if (this.pages.currPage === 1) {
+            this.list = ret.page.records
+          } else {
+            this.list.push(...ret.page.records)
+          }
+        }
+        return ret.page.total
+      })
+      return total
+    }
+  },
+  components: {
+    Scroll,
+    IsEmpty,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs
+  }
+}
+</script>
+<style scoped>
+.inPay{
+  color:#fa5a4b;
+}
+.outPay{
+  color:#999;
+}
+</style>

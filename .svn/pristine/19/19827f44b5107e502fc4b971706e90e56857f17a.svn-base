@@ -1,0 +1,188 @@
+<template>
+  <div>
+    <van-nav-bar
+      title="门店"
+      left-text=""
+      right-text=""
+      :left-arrow="false"
+      :fixed="true"
+    />
+    <div class="page-top">
+      <div class="flex-wrap">
+        <div class="flex top-item">
+          品牌
+        </div>
+        <div class="vertical-line"></div>
+        <div class="flex top-item">
+          推荐排序
+        </div>
+      </div>
+    </div>
+    <van-list style="margin-top:110px"
+      v-model="loading"
+      :finished="noMore"
+      @load="loadMore"
+    >
+      <van-cell v-for="(item,index) in list" :key="index" :to="{name:'维修厂门店', query: { id: item.id }}">
+        <div class="news-item">
+          <div class="news-img">
+            <img   v-lazy="picIp+item.companyLogo" >
+          </div>
+          <div class="news-content">
+            <div class="news-title">{{item.companyName}}</div>
+            <div class="sort">
+              <span><span class="sort-large">{{ item.score ? item.score : 0}}</span>分</span>
+              <div class="sort-right">
+                <span class="sort-large">5</span>折起
+              </div>
+            </div>
+            <div>
+              <span class="tips-item" v-for="(item2,index) in item.baseCompanyKindList" :key="index">{{item2.typeName}}</span>
+            </div>
+            <div class="address">{{item.address}}</div>
+          </div>
+        </div>
+      </van-cell>
+    </van-list>
+    <is-empty v-model="isEmpty" >抱歉,没有最新消息</is-empty>
+  </div>
+</template>
+<script>
+import { shopList } from '@/api/shop'
+import imageURL from '@/assets/logo.png'
+import { List } from 'vant'
+import IsEmpty from '@/components/is-empty/'
+import loadMore from '@/mixins/load-more'
+export default {
+  mixins: [loadMore],
+  data() {
+    return {
+      imageURL: imageURL,
+      list: [],
+      kindList: [],
+      picIp: process.env.BASE_API
+    }
+  },
+  mounted() {
+    this.resetInit()
+  },
+  methods: {
+    async initData() {
+      const total = await shopList({ pageNo: this.pages.currPage, pageSize: this.pages.perPage }, true).then((ret) => {
+        if (ret.page.records) {
+          this.list.push(...ret.page.records)
+        }
+        return ret.page.total
+      })
+      return total
+    }
+  },
+  components: {
+    [List.name]: List,
+    IsEmpty
+  }
+}
+</script>
+<style scoped>
+ .page-top{
+   position: fixed;
+   top: 50px;
+   left: 0;
+   width: 100%;
+  }
+  .flex-wrap{
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.18rem;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #ededee;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+  }
+  .flex{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+  }
+  .top-item{
+    color: #666;
+  }
+  .vertical-line{
+    position: relative;
+  }
+  .vertical-line::after{
+    top: 5px;
+    bottom: 5px;
+    background: #ccc;
+    content: '';
+    width: 1px;
+    position: absolute;
+    -webkit-transform: scale(0.5,1);
+    transform: scale(0.5,1)
+  }
+ .news-item{
+   position: relative;
+   /* padding: 0.6rem 0.5rem; */
+   font-size: 1.18rem;
+   height: 7rem;
+   /* margin-top: 10px; */
+ }
+ .news-img{
+   width: 8.67rem;
+   height: 5.91rem;
+   border-radius: 0.32rem;
+  }
+  .news-img img{
+    width:100%;
+    height: 100%;
+    border-radius: 0.35rem;
+  }
+  .news-content{
+    position: absolute;
+    left: 10.5rem;
+    right:0.8rem;
+    top: 0.5rem;
+    height:auto;
+  }
+  .news-title{
+    color: #333;
+    font-size: 1.1rem;
+    margin-top: 0.08rem;
+    display: -webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sort{
+    color: #fa5a4b;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .sort-large{ font-size: 1.18rem}
+  .sort-right{
+    float: right;
+  }
+  .tips-item{
+    min-width: 2rem;
+    height: 1.18rem;
+    color: #ffaa3f;
+    margin-right: 0.4rem;
+    display: inline-block;
+    padding: 0 0.4rem;
+    border: 1px solid #ffaa3f;
+    line-height: 1.18rem;
+    border-radius: 3px;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+  .address{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #666;
+    font-size: 1rem;
+  }
+</style>

@@ -1,0 +1,7 @@
+export default [
+  {
+    path: '/home/area',
+    name: '地区选择',
+    component: resolve => require(['@/components/selectArea'], resolve)
+  }
+]
